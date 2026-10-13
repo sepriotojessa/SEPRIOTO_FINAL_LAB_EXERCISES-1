@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 5 - PHP JSON AJAX</title>
+</head>
+<body>
+    <h2>Welcome Form</h2>
+
+    <form id="welcomeForm">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Server Response:</h3>
+    <pre id="response"></pre>
+
+    <script>
+        document.getElementById("welcomeForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+
+            try {
+                const result = await fetch("lab5.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ name: name })
+                });
+
+                const data = await result.json();
+
+                document.getElementById("response").textContent =
+                    JSON.stringify(data);
+            } catch (error) {
+                document.getElementById("response").textContent =
+                    "Error: Could not connect to the server.";
+            }
+        });
+    </script>
+</body>
+</html>
